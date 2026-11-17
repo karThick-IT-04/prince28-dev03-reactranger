@@ -1,59 +1,51 @@
-
+﻿
 # ReactRanger
 
-**An AI-powered React mentor grounded in current React documentation.**
+A React mentor that answers from the current react.dev docs and clearly marks legacy patterns.
 
-## 1. Project Overview
+**Status:** Day 1 foundation (FastAPI skeleton, quality gates). Live URL from Day 5.
 
-ReactRanger is a documentation-grounded AI assistant that helps frontend developers understand React concepts, solve development problems, and migrate legacy React code to modern patterns.
+## Who it's for
 
-It uses the current official React documentation at https://react.dev/ as its primary knowledge source.
+Frontend developer at a Chennai agency migrating a class-component app to modern React.
 
-## 2. Problem Statement
+## The problem
 
-Frontend developers working with older React applications often encounter legacy patterns and outdated examples.
+Developers maintaining older React applications often encounter outdated patterns in tutorials, examples and existing code. Finding the correct modern replacement can be confusing, especially when older approaches still appear in online answers. ReactRanger aims to solve this problem by grounding its answers in the current official React documentation. It also identifies legacy patterns and explains how to replace them with modern React practices.
 
-Finding the correct modern replacement can take time, especially when documentation and older tutorials provide conflicting guidance.
+## Data sources
 
-ReactRanger aims to make this process easier by providing answers grounded in current React documentation and clearly identifying legacy patterns.
+react.dev repository content (Learn + Reference MDX), React blog release posts (18, 19), React changelog.
 
-## 3. Target User
+- https://github.com/reactjs/react.dev
+- https://github.com/facebook/react/blob/main/CHANGELOG.md
+- Terms: react.dev content CC BY 4.0; React code MIT.
 
-A frontend developer at a Chennai-based agency who is migrating a class-component React application to modern React.
+## Hardest problem (my interview story)
 
-## 4. Core Features
+Old vs new React: retrieval often pulls legacy pages because they match the question's words. Answers must follow current docs, label legacy patterns, and give the modern replacement with a citation.
 
-- Answer React questions using current React documentation.
-- Provide relevant documentation citations.
-- Identify legacy React patterns.
-- Explain why a pattern is considered legacy.
-- Suggest modern React replacements.
-- Provide line-by-line feedback through the Legacy Detector.
+## Signature feature
 
-## 5. Primary Knowledge Source
+Legacy detector: paste a component and see which lines use legacy patterns, each with the modern replacement and doc link.
 
-- Official React documentation: https://react.dev/
+## Target metric
 
-## 6. Success Metrics
+Modern-pattern correctness of 90%+ on 40 questions; legacy patterns always labelled.
 
-- Achieve at least 90% modern-pattern correctness across 40 evaluation questions.
-- Ensure legacy patterns are always clearly labelled.
-- Provide documentation references supporting answers.
+## Run it locally
 
-## 7. Planned Technology
+```bash
+uv sync
+cp .env.example .env   # Windows: copy .env.example .env
+uv run uvicorn reactranger.api.main:create_app --factory --reload
+```
 
-- Python
-- FastAPI
-- PostgreSQL
-- pgvector
-- React
-- Large Language Models
-- Retrieval-Augmented Generation (RAG)
+Then open http://localhost:8000/docs
 
-## 8. Project Status
+## Checks
 
-Currently in development.
-
-## 9. Project Goals
-
-Build a reliable, production-ready React documentation assistant that helps developers understand modern React practices and safely identify outdated code patterns.
+```bash
+uv run pytest
+uv run ruff check .
+```
