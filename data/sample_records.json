@@ -38,5 +38,128 @@
     "api_name": "useOptimistic",
     "react_version": "19",
     "is_legacy": false
+  },
+
+  {
+    "id": "006",
+    "page": "reference/react/useReducer",
+    "section": "Reference",
+    "api_name": "useReducer",
+    "react_version": "16.8",
+    "is_legacy": false
+  },
+  {
+    "id": "007",
+    "page": "reference/react/useContext",
+    "section": "Reference",
+    "api_name": "useContext",
+    "react_version": "16.8",
+    "is_legacy": false
+  },
+  {
+    "id": "008",
+    "page": "reference/react/useRef",
+    "section": "Reference",
+    "api_name": "useRef",
+    "react_version": "16.8",
+    "is_legacy": false
+  },
+  {
+    "id": "009",
+    "page": "reference/react/useMemo",
+    "section": "Reference",
+    "api_name": "useMemo",
+    "react_version": "16.8",
+    "is_legacy": false
+  },
+  {
+    "id": "010",
+    "page": "reference/react/useCallback",
+    "section": "Reference",
+    "api_name": "useCallback",
+    "react_version": "16.8",
+    "is_legacy": false
+  },
+
+  {
+    "id": "011",
+    "page": "reference/react/useTransition",
+    "section": "Reference",
+    "api_name": "useTransition",
+    "react_version": "18",
+    "is_legacy": false
+  },
+  {
+    "id": "012",
+    "page": "reference/react/useDeferredValue",
+    "section": "Reference",
+    "api_name": "useDeferredValue",
+    "react_version": "18",
+    "is_legacy": false
+  },
+  {
+    "id": "013",
+    "page": "reference/react/useId",
+    "section": "Reference",
+    "api_name": "useId",
+    "react_version": "18",
+    "is_legacy": false
+  },
+  {
+    "id": "014",
+    "page": "reference/react/useSyncExternalStore",
+    "section": "Reference",
+    "api_name": "useSyncExternalStore",
+    "react_version": "18",
+    "is_legacy": false
+  },
+  {
+    "id": "015",
+    "page": "reference/react/useInsertionEffect",
+    "section": "Reference",
+    "api_name": "useInsertionEffect",
+    "react_version": "18",
+    "is_legacy": false
+  },
+
+  {
+    "id": "016",
+    "page": "reference/react/useLayoutEffect",
+    "section": "Reference",
+    "api_name": "useLayoutEffect",
+    "react_version": "16.8",
+    "is_legacy": false
+  },
+  {
+    "id": "017",
+    "page": "reference/react/useImperativeHandle",
+    "section": "Reference",
+    "api_name": "useImperativeHandle",
+    "react_version": "16.8",
+    "is_legacy": false
+  },
+  {
+    "id": "018",
+    "page": "reference/react/useDebugValue",
+    "section": "Reference",
+    "api_name": "useDebugValue",
+    "react_version": "16.8",
+    "is_legacy": false
+  },
+  {
+    "id": "019",
+    "page": "reference/react/useEffectEvent",
+    "section": "Reference",
+    "api_name": "useEffectEvent",
+    "react_version": "19.2",
+    "is_legacy": false
+  },
+  {
+    "id": "020",
+    "page": "react-dom/hooks/useFormStatus",
+    "section": "Reference",
+    "api_name": "useFormStatus",
+    "react_version": "19",
+    "is_legacy": false
   }
 ]
