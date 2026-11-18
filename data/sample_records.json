@@ -1,26 +1,42 @@
 [
   {
     "id": "001",
-    "page": "",
-    "section": "",
-    "api_name": "",
-    "react_version": "",
-    "is_legacy": ""
+    "page": "reference/react/useState",
+    "section": "Reference",
+    "api_name": "useState",
+    "react_version": "16.8",
+    "is_legacy": false
   },
   {
     "id": "002",
-    "page": "",
-    "section": "",
-    "api_name": "",
-    "react_version": "",
-    "is_legacy": ""
+    "page": "reference/react/useEffect",
+    "section": "Reference",
+    "api_name": "useEffect",
+    "react_version": "16.8",
+    "is_legacy": false
   },
   {
     "id": "003",
-    "page": "",
-    "section": "",
-    "api_name": "",
-    "react_version": "",
-    "is_legacy": ""
+    "page": "reference/react/forwardRef",
+    "section": "Deprecated",
+    "api_name": "forwardRef",
+    "react_version": "19",
+    "is_legacy": true
+  },
+  {
+    "id": "004",
+    "page": "reference/react/useActionState",
+    "section": "Reference",
+    "api_name": "useActionState",
+    "react_version": "19",
+    "is_legacy": false
+  },
+  {
+    "id": "005",
+    "page": "reference/react/useOptimistic",
+    "section": "Reference",
+    "api_name": "useOptimistic",
+    "react_version": "19",
+    "is_legacy": false
   }
 ]
