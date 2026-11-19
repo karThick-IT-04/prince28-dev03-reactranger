@@ -61,3 +61,63 @@ My table contains only 20 records, so scanning the whole table is inexpensive. P
 
 When would it switch to the GIN index? (1 line)
 When the table grows and a metadata filter is selective enough that using the GIN index is estimated to be cheaper than scanning the entire table.
+
+
+## D04 · Docker, Compose and tests
+
+### The image
+
+```text
+IMAGE             ID             DISK USAGE   CONTENT SIZE
+reactranger:dev   ca8f65e7cd9b    300MB        70MB
+
+uid=999(app) gid=999(app) groups=999(app)
+```
+
+- Size: 300 MB (target: under 400 MB)
+- First build: 53.2 s. After changing one line of code: 21.8 s.
+- Which step said CACHED, and why? (1 line, your own words)
+The `uv sync --locked --no-install-project --no-dev` step showed `CACHED` because only the application source code changed, while `uv.lock` and `pyproject.toml` remained unchanged.
+
+### The stack
+
+```text
+NAME                    IMAGE                    SERVICE   STATUS
+reactranger-api-1       reactranger-api          api       Up 3 minutes (healthy)
+reactranger-db-1        pgvector/pgvector:pg17   db        Up 3 minutes (healthy)
+reactranger-migrate-1   reactranger-migrate      migrate   Exited (0) 3 minutes ago
+reactranger-redis-1     redis:7-alpine           redis     Up 3 minutes (healthy)
+
+First up:
+records=20 inserted=20 updated=0 unchanged=0
+
+After down + up:
+records=20 inserted=0 updated=0 unchanged=20
+```
+
+### Breaking the database on purpose
+
+```text
+db stopped:  /health → {"status":"ok","app":"reactranger","env":"local"}
+db stopped:  /ready  → {"status":"not_ready","checks":{"database":false}}
+db started:  /ready  → {"status":"ready","checks":{"database":true}}
+```
+
+Why should a load balancer stop sending traffic here but not restart the app? (2 lines)
+The load balancer should stop sending traffic because the application cannot handle database-dependent requests while the database is unavailable.
+It should not restart the application because the application is still alive and becomes ready again when the database recovers.
+
+
+
+### Tests and coverage
+
+```text
+uv run poe test              → 16 passed in 0.60s
+uv run poe test-integration  → 7 passed in 6.76s
+coverage TOTAL, unit only    → TOTAL    254    36    26    2    83%
+coverage TOTAL, with integration tests → TOTAL    254    15    26    2    92%
+```
+
+Two files or lines my coverage report says are never run, and whether they matter: (2 lines)
+api/middleware.py (lines 22–24): These lines are not covered. They matter because middleware behavior should be tested.
+db/repository.py (lines 32, 36, 66): These lines are not covered. They matter because untested database operation paths may contain bugs.
