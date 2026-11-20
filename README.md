@@ -1,9 +1,15 @@
 ﻿
 # ReactRanger
 
+[![CI](https://github.com/karThick-IT-04/prince28-dev03-reactranger/actions/workflows/ci.yml/badge.svg)](https://github.com/karThick-IT-04/prince28-dev03-reactranger/actions/workflows/ci.yml)
+[![Live](https://img.shields.io/website?url=https%3A%2F%2Freactranger.onrender.com%2Fhealth&label=live)](https://reactranger.onrender.com/docs)
+[![Uptime (30 days)](https://img.shields.io/uptimerobot/ratio/YOUR-MONITOR-KEY)](https://reactranger.onrender.com/health)
+
+**Live:** https://reactranger.onrender.com · [API docs](https://reactranger.onrender.com/docs) · [health](https://reactranger.onrender.com/health)
+
 A React mentor that answers from the current react.dev docs and clearly marks legacy patterns.
 
-**Status:** Day 1 foundation (FastAPI skeleton, quality gates). Live URL from Day 5.
+**Status:** Week 1 complete · live at https://reactranger.onrender.com
 
 ## Who it's for
 

@@ -121,3 +121,38 @@ coverage TOTAL, with integration tests → TOTAL    254    15    26    2    92%
 Two files or lines my coverage report says are never run, and whether they matter: (2 lines)
 api/middleware.py (lines 22–24): These lines are not covered. They matter because middleware behavior should be tested.
 db/repository.py (lines 32, 36, 66): These lines are not covered. They matter because untested database operation paths may contain bugs.
+
+
+## D05 · CI/CD and going live
+
+- Live URL: https://reactranger.onrender.com
+- CI run for pull request 1: https://github.com/karThick-IT-04/prince28-dev03-reactranger/actions/runs/44700991279
+- First deploy that ran by itself: https://github.com/karThick-IT-04/prince28-dev03-reactranger/actions/runs/44708170368
+- Merge clicked at 2:36 pm → "Smoke test passed" at 2:39 pm → lead time: 3 min
+
+### Smoke test output from that CD run
+
+```text
+ok   /health -> 200, version 82577d77f3770974b2b228f5d6dd18a0e39b8d32
+ok   /ready -> 200 {'status': 'ready', 'checks': {'database': True}}
+ok   /v1/documents?limit=1 -> 200
+Smoke test passed
+```
+
+### Rollback drill
+
+- Rolled back to sha 4d3fa684ebb29aac82b016722b9000be605d45e9 : started 10:49 pm, smoke passed 10:50 (1 min)
+- Rolled forward to sha 82577d77f3770974b2b228f5d6dd18a0e39b8d32 : 1 min
+- During the rollback, the database stayed on the newer schema. Why is that safe here?
+The older application passed the smoke test against the newer database schema, indicating compatibility for the tested endpoints.
+The rollback only changed the Docker image; it did not reverse migrations or delete existing database data.
+
+### Where my secrets live
+
+- Neon string: GitHub Secret DATABASE_URL + Render environment. Not in Git, not in the image.
+- Render deploy hook: GitHub Secret RENDER_DEPLOY_HOOK only.
+
+### Monitoring
+
+- UptimeRobot checks /health every 5 minutes; alerts go to my email.
+- One thing that would make my live app faster on its first request: Use a Render instance that stays awake instead of spinning down when idle.
