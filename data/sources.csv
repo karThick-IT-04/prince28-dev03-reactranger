@@ -1,0 +1,17 @@
+# Sources for ReactRanger. One row per file to download. Lines starting with # are notes.
+# Start target: Learn + Reference sections (about 300 pages)
+# Where to look:
+#   https://github.com/reactjs/react.dev
+#   https://github.com/facebook/react/blob/main/CHANGELOG.md
+# Terms on my project card: react.dev content CC BY 4.0; React code MIT.
+url,source,licence,title
+https://react.dev/reference/react/useMemo,react-dev,CC BY 4.0,React useMemo
+https://react.dev/reference/react/useEffect,react-dev,CC BY 4.0,React useEffect
+https://react.dev/reference/react/useReducer,react-dev,CC BY 4.0,React useReducer
+https://react.dev/reference/react/useState,react-dev,CC BY 4.0,React useState
+https://react.dev/reference/react/useLayoutEffect,react-dev,CC BY 4.0,React useLayoutEffect
+https://react.dev/reference/react/useRef,react-dev,CC BY 4.0,React useRef
+https://react.dev/reference/react/useActionState,react-dev,CC BY 4.0,React useActionState
+https://react.dev/reference/react-dom/components/form,react-dev,CC BY 4.0,React form
+https://react.dev/learn/you-might-not-need-an-effect,react-dev,CC BY 4.0,You Might Not Need an Effect
+https://react.dev/learn/sharing-state-between-components,react-dev,CC BY 4.0,Sharing State Between Components
