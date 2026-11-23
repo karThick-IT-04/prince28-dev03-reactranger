@@ -156,3 +156,42 @@ The rollback only changed the Docker image; it did not reverse migrations or del
 
 - UptimeRobot checks /health every 5 minutes; alerts go to my email.
 - One thing that would make my live app faster on its first request: Use a Render instance that stays awake instead of spinning down when idle.
+
+
+## D06 · Collecting the corpus
+
+- Start target: Learn + Reference sections (about 300 pages)
+- Collected today: 192 files, 1134 pages, 7.3 MB (from DATASET.md)
+- Doors used: URL list / Git repository
+
+### Licence check
+
+| Source | Licence or terms, in my words | May I show full text in answers? |
+| react-dev | React documentation is licensed under CC BY 4.0. I must provide attribution and link to the original source. |Prefer short attributed excerpts and links rather than reproducing entire pages. |
+| react-docs-repo | React documentation content uses CC BY 4.0, while React code uses the MIT licence. I must preserve attribution and applicable licence notices. | Prefer short attributed excerpts and links rather than reproducing entire pages. |
+
+### robots.txt
+
+- Site: https://react.dev/robots.txt . Its robots.txt says (2 lines):
+User-agent: * — the rules apply to all web crawlers.
+Disallow: is empty — no paths are blocked by these rules.
+- Was anything blocked for my bot? What did I do about it?
+No. The downloader reported 0 blocked requests. I respected robots.txt and used the configured request delay.
+
+### Kill and resume
+
+- Run 1: I pressed Ctrl+C after 4 files
+- Run 2: downloaded=6 skipped=4
+- Run 3: downloaded=0 skipped=10
+
+### Capacity (from docs/CAPACITY.md)
+
+- Tokens per page, measured:  750 (estimated using 4 characters per token)
+- Full corpus: 0.60 M tokens, 1725 chunks, embedding about Rs 10, vectors 5 MB
+- The number that surprised me most, and why (2 lines):
+The estimated embedding cost was only Rs 10 for the 800-page target.
+This showed me that storing and embedding the initial React documentation corpus could be inexpensive.
+
+### One thing that went wrong today, and how I fixed it
+
+The Git repository fetch initially failed because of a network/DNS issue. After the connection worked, I successfully fetched 182 React documentation files. I also learned that the URL-list and repository fetches needed different source names to avoid a directory collision.
