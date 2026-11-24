@@ -237,3 +237,28 @@ The complete list, with a sha256 fingerprint of every file, is `data/manifest.js
 - React blog posts, the React changelog, and additional legacy documentation have not yet been collected. These are needed for historical comparisons and migration guidance.
 - Some documentation topics appear in both downloaded HTML and repository Markdown, so content deduplication will be needed before indexing.
 - The remaining sources can be collected in later ingestion runs using the resumable downloader.
+
+## Parsing Coverage — D07
+
+| Metric | Result |
+|---|---:|
+| Total corpus files | 192 |
+| Successfully parsed files | 192 |
+| Failed files | 0 |
+| File-level parsing coverage | 100% |
+| Pages stored in PostgreSQL | 1,247 |
+| Total parsing time | 102.3 seconds |
+
+### Coverage calculation
+
+File coverage = (192 / 192) × 100 = 100%
+
+### Dataset readiness
+
+- All collected files were successfully parsed.
+- No parsing failures were recorded in PostgreSQL.
+- Idempotency verified: 192 files skipped and 0 new pages.
+- Page numbers and heading paths were manually inspected.
+- Page-level completeness has not been independently measured.
+- Known limitations: MDX markup and code-block splitting.
+- The corpus is ready for the next chunking stage.
