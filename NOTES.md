@@ -195,3 +195,71 @@ This showed me that storing and embedding the initial React documentation corpus
 ### One thing that went wrong today, and how I fixed it
 
 The Git repository fetch initially failed because of a network/DNS issue. After the connection worked, I successfully fetched 182 React documentation files. I also learned that the URL-list and repository fetches needed different source names to avoid a directory collision.
+
+## D07 · Parser comparison
+
+<!-- parsers:start -->
+| File | Parsers (A / B) | Pages | A found | B found | Time (A / B) | Better, why |
+|---|---|---|---|---|---|---|
+| useeffect-4d23b49b.html | trafilatura / strip tags | 14 | 35,290 chars, 27 headings, 0 tables | 44,451 chars, 0 headings, 0 tables | 1.35 s / 0.01 s | Trafilatura: meaningful headings and readable examples verified. |
+| useactionstate-f7733182.html | trafilatura / strip tags | 11 | 24,542 chars, 29 headings, 0 tables | 33,068 chars, 0 headings, 0 tables | 0.41 s / 0.01 s | Trafilatura: preserves 29 headings with less text. |
+| usememo-210c042a.html | trafilatura / strip tags | 11 | 27,975 chars, 13 headings, 0 tables | 33,753 chars, 0 headings, 0 tables | 0.25 s / 0.01 s | Trafilatura: better section structure. |
+| usestate-d02f06ba.html | trafilatura / strip tags | 8 | 21,356 chars, 28 headings, 0 tables | 27,265 chars, 0 headings, 0 tables | 0.71 s / 0.01 s | Trafilatura: retains 28 headings. |
+| you-might-not-need-an-effect-8b892800.html | trafilatura / strip tags | 14 | 36,242 chars, 11 headings, 0 tables | 40,469 chars, 0 headings, 0 tables | 0.41 s / 0.03 s | Trafilatura: readable explanations and examples verified. |
+| form-8dc2f808.html | trafilatura / strip tags | 8 | 19,109 chars, 23 headings, 0 tables | 25,487 chars, 0 headings, 0 tables | 0.38 s / 0.01 s | Trafilatura: preserves section structure with less text. |
+| usereducer-be89a551.html | trafilatura / strip tags | 6 | 15,894 chars, 18 headings, 0 tables | 21,564 chars, 0 headings, 0 tables | 0.27 s / 0.01 s | Trafilatura: retains 18 headings. |
+| useref-1b61fba5.html | trafilatura / strip tags | 3 | 7,826 chars, 15 headings, 0 tables | 12,735 chars, 0 headings, 0 tables | 0.16 s / 0.00 s |  Trafilatura: meaningful headings and code examples verified. |
+| uselayouteffect-41d47fa5.html | trafilatura / strip tags | 5 | 10,259 chars, 11 headings, 0 tables | 14,083 chars, 0 headings, 0 tables | 0.15 s / 0.00 s | Trafilatura: better heading preservation.|
+| sharing-state-between-components-b2474c67.html | trafilatura / strip tags | 4 | 10,534 chars, 10 headings, 0 tables | 14,101 chars, 0 headings, 0 tables | 0.15 s / 0.00 s | Trafilatura: retains useful section metadata. |
+<!-- parsers:end -->
+
+
+### D07 · Parsing my corpus
+
+- Files in the manifest: 192 · parsed: 192 · failed: 0 · pages in Postgres: 1247
+- Parsing coverage: 100 % of files
+
+### Failures by reason
+
+| Reason | Files | What I did |
+|---|---|---|
+| None | 0 | Verified that the parse_failures table is empty. |
+
+- 0 failures out of 192 files.
+- The one I fixed: Not applicable because no parsing failures occurred.
+- No retry was required.
+
+### What I saw when I read my parsed pages
+
+- A page where the heading path is right (document, page, path):
+  Document: useEffect
+  Page: 3
+  Path: ["useEffect", "Usage", "Connecting to an external system"]
+- Something that came out wrong (document, page, what):
+Document: Consolidate state logic with a reducer
+  Page: 23
+  MDX anchor comments remain in titles and heading paths.
+  Some pages begin inside JavaScript code blocks.
+  MDX components such as Sandpack and Hint remain in the text.
+- A table: Markdown grid or loose text? (document, page):
+  No tables were detected in the ten compared HTML documents.
+  Table extraction could not be evaluated using these samples.
+
+### My parser choice
+
+- For PDFs: Not applicable because my corpus contains no PDF files.
+- For HTML I use Trafilatura because it preserves heading structure.
+  For useEffect, it extracted 35,290 characters and 27 headings,
+  compared to 44,451 characters and 0 headings with strip tags.
+
+- A kind of document in my corpus that neither parser handles well:
+ React MDX documents containing interactive code examples,anchor comments and custom components.
+
+### One thing that went wrong today, and how I fixed it
+
+- Ruff reported formatting issues in models.py after
+  adding the Page headings and ParseFailure models.
+- I Fixed using:
+  uv run ruff format src/reactranger/db/models.py
+- Ran lint again successfully.
+- All 52 unit tests passed.
