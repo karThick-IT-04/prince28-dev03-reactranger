@@ -263,3 +263,49 @@ Document: Consolidate state logic with a reducer
   uv run ruff format src/reactranger/db/models.py
 - Ran lint again successfully.
 - All 52 unit tests passed.
+
+
+### D08 · LLM gateway
+
+- Primary: gemini-3.5-flash (Gemini) · fallback: openai/gpt-oss-20b (Groq)
+- First question on my laptop: first words after 6.18 s, total 8.90 s, tokens in 165 / out 131, cost Rs ___
+- Same question on my live URL (second, awake request): first words after ___ s. Day 1 target: under 1.5 s
+
+### Tokens: English against Tamil
+
+| Message | tokens in |
+|---|---|
+| "Hi" (baseline: mostly my system prompt) | 159 |
+| The English sentence | 167 |
+| The same sentence in Tamil | 175 |
+
+- The Tamil message needs about 2 times the tokens of the English one.
+
+### What the model does without my documents
+
+- Question 6 ("Why is our client's website slow on their office Wi-Fi?"): It declined the question because it was outside its React subject area. Its exact words during the retest: "This question is outside ReactRanger's scope, as I only answer questions related to React and the official React documentation." It did not invent a cause, but it did not explicitly acknowledge that it lacked sufficient information to diagnose the problem.
+- A detail it got wrong or invented (question → what it said → what is true):
+"What is the difference between useEffect and useLayoutEffect?" → It said useEffect runs after the browser paints → React generally allows painting first, but interaction-triggered effects may run before painting.
+Another incorrect detail: Groq described React.memo as performing a deep comparison, whereas it uses shallow prop comparison by default.
+- The off-topic question: did it decline in one sentence?
+"Who won the 2011 cricket world cup?" — It declined the unrelated question.
+
+### Fallback and circuit breaker
+
+- With the primary broken: provider Groq , fallback YES , first words after 19.96 s
+- The question at which "llm call gemini … error" stopped appearing in the log: number 4.
+All four consecutive requests successfully used Groq.
+After the 30-second cooldown, Gemini was attempted again, returned HTTP 404, and Groq successfully answered.
+Restored gemini-3.5-flash and restarted the server. Gemini answered successfully with fallback=no.
+
+### The bill
+
+- /v1/usage today: calls 20 , errors 4 , fallbacks 5 , cost Rs 0.0511
+- Average per answered question: Rs 0.003194 (my Day 1 target: under Rs 0.50)
+The recorded average is below the target. However, gemini-3.5-flash is missing from the pricing table, so the actual estimated cost per answer is incomplete and the target cannot be conclusively verified.
+
+### One thing that went wrong today, and how I fixed it
+
+The original Gemini model (gemini-3.8-flash) encountered a timeout and HTTP 503 due to provider unavailability. I switched to gemini-3.5-flash using the environment variable and verified that both Gemini and Groq worked.
+
+The circuit breaker and fallback mechanism were tested successfully. However, response latency remains above the Day 1 target, and the pricing table needs to be updated for the replacement Gemini model.
