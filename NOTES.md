@@ -300,12 +300,12 @@ Restored gemini-3.5-flash and restarted the server. Gemini answered successfully
 
 ### The bill
 
-- /v1/usage today: calls 20 , errors 4 , fallbacks 5 , cost Rs 0.0511
-- Average per answered question: Rs 0.003194 (my Day 1 target: under Rs 0.50)
-The recorded average is below the target. However, gemini-3.5-flash is missing from the pricing table, so the actual estimated cost per answer is incomplete and the target cannot be conclusively verified.
+- /v1/usage today: calls 23 , errors 4 , fallbacks 5 , cost Rs 0.0511
+- Average per answered question: Rs 0.002689 (my Day 1 target: under Rs 0.50)
+The recorded average is below the target, but gemini-3.5-flash is missing from the pricing table. Therefore, the cost target cannot be conclusively verified.
 
 ### One thing that went wrong today, and how I fixed it
 
-The original Gemini model (gemini-3.8-flash) encountered a timeout and HTTP 503 due to provider unavailability. I switched to gemini-3.5-flash using the environment variable and verified that both Gemini and Groq worked.
+The original Gemini model (gemini-3.8-flash) encountered a timeout and HTTP 503 due to provider unavailability. I switched to gemini-3.5-flash using the LLM_PRIMARY_MODEL environment variable and verified that both Gemini and Groq worked successfully.
 
-The circuit breaker and fallback mechanism were tested successfully. However, response latency remains above the Day 1 target, and the pricing table needs to be updated for the replacement Gemini model.
+The fallback mechanism, circuit breaker, live streaming and usage endpoint were verified successfully. Response latency and the missing pricing entry remain areas for improvement.
