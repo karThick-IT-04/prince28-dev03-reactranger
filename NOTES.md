@@ -309,3 +309,43 @@ The recorded average is below the target, but gemini-3.5-flash is missing from t
 The original Gemini model (gemini-3.8-flash) encountered a timeout and HTTP 503 due to provider unavailability. I switched to gemini-3.5-flash using the LLM_PRIMARY_MODEL environment variable and verified that both Gemini and Groq worked successfully.
 
 The fallback mechanism, circuit breaker, live streaming and usage endpoint were verified successfully. Response latency and the missing pricing entry remain areas for improvement.
+
+## D09 · Prompt versions compared
+
+<!-- prompts:start -->
+
+| Prompt version | Correct | Accuracy | Invalid replies | Avg tokens in |
+|---|---|---|---|---|
+| classify_v1 | 10/20 | 50% | 0 | 100 |
+| classify_v2 | 17/20 | 85% | 0 | 264 |
+| classify_v3 | 18/20 | 90% | 0 | 375 |
+| classify_v4 | 20/20 | 100% | 0 | 410 |
+
+<!-- prompts:end -->
+
+
+### D09 · Prompts and structured output
+
+- My best router prompt: classify_v4 with 20 / 20
+- What I changed in v4, and what happened to the score: I improved the personal label definition to include application-specific, client-specific, network, device and runtime problems that general React documentation cannot answer. The accuracy increased from 90% to 100%.
+- The question my best version still gets wrong (line, wanted, got), and why I think so:None. All 20 questions were classified correctly in v4.
+- A label in my test set that I changed after seeing the results (or "none"):None
+- Input tokens per question: v1 100 , best version 410 . Is the extra accuracy worth it?Yes. Although v4 uses 4.1 times more input tokens, its accuracy improved from 50% to 100% on my test set.
+
+### My contract (DocMeta)
+
+- Fields I kept from my project card:section, api_name, react_version and is_legacy.
+- Fields I deleted, and why they make no sense per document:I removed page because the document title and source already identify the documentation page.
+- The field I tightened, and how:I restricted is_legacy to a list containing at most one value: legacy, modern or mixed. An empty list represents an unknown status.
+
+### Extraction run
+
+- Prompt version: extract_v1 · documents: 81 ok, atleast 3 repaired, 0 failed (of 192 parsed)
+- Not finished? Why, and how many are left:111 documents remain because the LLM providers repeatedly encountered HTTP 429 quota limits. I reduced the processing rate to 6 documents per minute, but the quota issue persisted. The extraction is resumable and has exceeded the minimum requirement of 50 documents.
+- Most common failure reason, and what I did about it:Provider rate limits interrupted extraction. Validation issues included summaries exceeding 300 characters and a section list exceeding 8 items. The automatic repair mechanism corrected the observed validation errors.
+- A record that was valid but wrong (document, field, what it said, what is true):Error-boundaries (document ID 89), summary field. It stated that "use hooks suspend rather than throw." The original documentation specifically explains that the use API suspends component execution when it encounters a pending promise.
+- Cost at list price: Rs 2.9292 in total, Rs 0.0362 per document.The actual total may be higher because some usage logging operations failed during a database connection interruption.
+
+### One thing that went wrong today, and how I fixed it
+
+During metadata extraction, a DNS resolution error interrupted the database connection. I verified the saved extraction progress in Neon and restarted the script without reprocessing completed documents. I also reduced the processing rate to handle provider rate limits. The extraction successfully reached 81 documents with zero recorded failures, although 111 documents remain pending due to quota limits.
