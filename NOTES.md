@@ -372,8 +372,8 @@ During metadata extraction, a DNS resolution error interrupted the database conn
 
 ### Live ingestion
 
-- ReactRanger on Render: ___ of 5 documents done, ___ failed. The reasons:
-- A request without the token gets status ___
+- ReactRanger on Render: 5 of 5 documents done, 0 failed. The reasons: All documents completed successfully in 71 seconds, producing 67 pages.
+- A request without the token gets status 401 Unauthorized (Missing or wrong X-Admin-Token header).git status --short
 
 ### Week 2 against Monday's estimate
 
