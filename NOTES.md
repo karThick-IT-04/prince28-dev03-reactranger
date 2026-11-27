@@ -349,3 +349,37 @@ The fallback mechanism, circuit breaker, live streaming and usage endpoint were 
 ### One thing that went wrong today, and how I fixed it
 
 During metadata extraction, a DNS resolution error interrupted the database connection. I verified the saved extraction progress in Neon and restarted the script without reprocessing completed documents. I also reduced the processing rate to handle provider rate limits. The extraction successfully reached 81 documents with zero recorded failures, although 111 documents remain pending due to quota limits.
+
+
+### D10 · Queue and worker
+
+- First run: 10 documents queued, finished in 52 s. Done 10 , skipped 0 , failed 0
+- Pace: 5.2 s per document (INGEST_RPM = 12 , INGEST_CONCURRENCY = 2 )
+
+### Kill test
+
+- Queued: 20. At the kill: queued 13 , running 2 , done 5 , failed 0
+- After the new worker: done 19 + skipped 0 + failed 1 = 20 (must be 20)
+- Documents in the database: 192 , different ids: 192 (must be equal)
+- The interrupted items came back after 336 s. Why that long:including the delay before restarting the worker. Exact recovery time was not measured. Redis job locks need to expire before interrupted items can be processed again.
+- Why nothing was doubled (one sentence, in my own words):The worker checks existing document IDs before inserting documents again, so retrying a job does not create duplicate documents.
+
+### Dead-letter list
+
+| Stage (parse / extract / download / gave up) | Items | What I did |
+|---|---|---|
+| Gave up (extract) | 1 | Gemini circuit breaker was open and Groq returned HTTP 429. Waited for the rate limit to reset and ran the retry command. The document completed successfully in 10 seconds. |
+
+### Live ingestion
+
+- ReactRanger on Render: ___ of 5 documents done, ___ failed. The reasons:
+- A request without the token gets status ___
+
+### Week 2 against Monday's estimate
+
+- docs/CAPACITY.md said: 1134 pages, 850582 tokens. docs/INGEST_REPORT.md says: 1247 pages, 792803 tokens
+- The difference, and why: Pages increased by 113 (9.96%), while estimated tokens decreased by 57,779 (6.79%). This is likely due to differences between Monday's character-based estimates and the parser's actual page splitting and text processing.
+
+### One thing that went wrong today, and how I fixed it
+
+During the kill test, one document failed after three attempts because of LLM rate limits. I inspected the dead-letter list, waited for the rate limit to reset, and retried the failed document using uv run python scripts/ingest.py --retry-failed. It completed successfully in 10 seconds. The database contained 192 documents with 192 distinct external IDs, confirming that no duplicate documents were created.
